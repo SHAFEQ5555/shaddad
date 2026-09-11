@@ -5,291 +5,237 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SHAFEQ</title>
 
-  <!-- خط توقيعي قريب من الشعار (استبدله بصورة الشعار الأصلية عند الحاجة) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #0b0b0d;
-      --bg-soft: #131316;
-      --fg: #f5f5f7;
-      --muted: #9a9aa2;
-      --accent: #ffffff;
-      --ring: rgba(255, 255, 255, 0.12);
-      --radius: 999px;
-      --max: 1200px;
+      --bg: #0b0b0d; --bg-soft: #131316; --fg: #f5f5f7; --muted: #9a9aa2;
+      --accent: #ffffff; --ring: rgba(255,255,255,0.12); --radius: 999px;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html { scroll-behavior: smooth; }
-
     body {
       font-family: "Cairo", system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
+      background: var(--bg); color: var(--fg);
+      -webkit-font-smoothing: antialiased; overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
 
     /* ===== Navbar ===== */
     .nav {
-      position: fixed;
-      inset: 0 0 auto 0;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 22px clamp(20px, 5vw, 64px);
-      backdrop-filter: blur(12px);
-      background: linear-gradient(to bottom, rgba(11, 11, 13, 0.75), rgba(11, 11, 13, 0));
+      position: fixed; inset: 0 0 auto 0; z-index: 50;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px clamp(20px, 5vw, 64px); backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(11,11,13,0.75), rgba(11,11,13,0));
+      transition: transform 0.4s ease;
     }
-
     .brand {
-      font-family: "Dancing Script", cursive;
-      font-size: 34px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      line-height: 1;
-      color: var(--accent);
-      user-select: none;
+      font-family: "Dancing Script", cursive; font-size: 34px; font-weight: 700;
+      letter-spacing: 0.5px; line-height: 1; color: var(--accent); user-select: none;
     }
-    /* لو عندك صورة الشعار: احذف .brand النصي واستخدم هذا */
     .brand img { height: 40px; width: auto; display: block; }
-
-    .nav-links {
-      display: flex;
-      gap: 34px;
-      font-size: 15px;
-      color: var(--muted);
-    }
+    .nav-links { display: flex; gap: 34px; font-size: 15px; color: var(--muted); }
     .nav-links a { transition: color 0.25s ease; }
     .nav-links a:hover { color: var(--fg); }
-
     .nav-cta {
-      padding: 10px 22px;
-      border: 1px solid var(--ring);
-      border-radius: var(--radius);
-      font-size: 14px;
-      font-weight: 600;
-      transition: background 0.25s ease, color 0.25s ease;
+      padding: 10px 22px; border: 1px solid var(--ring); border-radius: var(--radius);
+      font-size: 14px; font-weight: 600; transition: background 0.25s ease, color 0.25s ease;
     }
     .nav-cta:hover { background: var(--fg); color: var(--bg); }
-
     .nav-toggle { display: none; background: none; border: 0; color: var(--fg); font-size: 26px; cursor: pointer; }
 
-    /* ===== Hero ===== */
-    .hero {
+    /* =====================================================
+       SCROLL-DRIVEN HERO
+       .hero-scroll هو الحاوية الطويلة (تعطي مسافة التمرير)
+       .hero هو الطبقة الثابتة (sticky) اللي تتحرك مع التمرير
+       ===================================================== */
+    .hero-scroll {
       position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 140px clamp(20px, 5vw, 64px) 80px;
-      isolation: isolate;
+      height: 220vh;            /* كل ما زدته زادت مدة الحركة */
     }
-
-    /* توهج خلفي متدرّج */
-    .hero::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -2;
+    .hero {
+      position: sticky; top: 0;
+      height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 0 clamp(20px, 5vw, 64px);
+      overflow: hidden; isolation: isolate;
+      will-change: transform;
+    }
+    /* توهّج خلفي (يعمل له parallax) */
+    .hero__glow {
+      position: absolute; inset: -20%; z-index: -2;
       background:
-        radial-gradient(900px 500px at 50% -10%, rgba(120, 120, 255, 0.14), transparent 60%),
-        radial-gradient(700px 500px at 80% 110%, rgba(255, 120, 180, 0.10), transparent 60%),
+        radial-gradient(900px 500px at 50% 0%, rgba(120,120,255,0.16), transparent 60%),
+        radial-gradient(700px 500px at 80% 100%, rgba(255,120,180,0.12), transparent 60%),
         var(--bg);
+      will-change: transform;
     }
-
-    /* شبكة نقطية خفيفة */
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    /* شبكة نقطية (parallax أسرع) */
+    .hero__grid {
+      position: absolute; inset: -20%; z-index: -1;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
       background-size: 26px 26px;
       -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
               mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+      will-change: transform;
     }
+
+    .hero__inner { will-change: transform, opacity; }
 
     .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 7px 16px;
-      margin-bottom: 30px;
-      border: 1px solid var(--ring);
-      border-radius: var(--radius);
-      font-size: 13px;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.03);
-      animation: fadeUp 0.8s ease both;
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; margin-bottom: 30px;
+      border: 1px solid var(--ring); border-radius: var(--radius); font-size: 13px;
+      color: var(--muted); background: rgba(255,255,255,0.03);
     }
-    .badge .dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: #4ade80;
-      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
-    }
+    .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.2); }
 
     .hero-logo {
-      font-family: "Dancing Script", cursive;
-      font-size: clamp(64px, 12vw, 150px);
-      font-weight: 700;
-      line-height: 0.9;
-      letter-spacing: 1px;
-      margin-bottom: 18px;
+      font-family: "Dancing Script", cursive; font-size: clamp(64px, 12vw, 150px);
+      font-weight: 700; line-height: 0.9; letter-spacing: 1px; margin-bottom: 18px;
       background: linear-gradient(180deg, #ffffff 0%, #b9b9c6 100%);
-      -webkit-background-clip: text;
-              background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: fadeUp 0.9s ease 0.05s both;
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+      will-change: transform;
     }
-    /* بديل بصورة الشعار الأصلية */
     .hero-logo img { max-width: min(560px, 90vw); height: auto; filter: invert(1); }
 
-    .hero h1 {
-      font-size: clamp(26px, 4.5vw, 52px);
-      font-weight: 800;
-      line-height: 1.15;
-      max-width: 18ch;
-      margin: 0 auto 22px;
-      animation: fadeUp 1s ease 0.15s both;
-    }
+    .hero h1 { font-size: clamp(26px, 4.5vw, 52px); font-weight: 800; line-height: 1.15; max-width: 18ch; margin: 0 auto 22px; }
+    .hero p  { font-size: clamp(15px, 2.2vw, 19px); font-weight: 300; color: var(--muted); max-width: 52ch; line-height: 1.7; margin: 0 auto 40px; }
 
-    .hero p {
-      font-size: clamp(15px, 2.2vw, 19px);
-      font-weight: 300;
-      color: var(--muted);
-      max-width: 52ch;
-      line-height: 1.7;
-      margin: 0 auto 40px;
-      animation: fadeUp 1.05s ease 0.25s both;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp 1.1s ease 0.35s both;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 15px 30px;
-      border-radius: var(--radius);
-      font-size: 16px;
-      font-weight: 600;
-      transition: transform 0.2s ease, background 0.25s ease, opacity 0.25s ease;
-    }
+    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: var(--radius); font-size: 16px; font-weight: 600; transition: transform 0.2s ease, background 0.25s ease, opacity 0.25s ease; }
     .btn:hover { transform: translateY(-2px); }
-
     .btn-primary { background: var(--fg); color: var(--bg); }
     .btn-primary:hover { opacity: 0.9; }
-
     .btn-ghost { border: 1px solid var(--ring); color: var(--fg); }
-    .btn-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+    .btn-ghost:hover { background: rgba(255,255,255,0.06); }
 
-    /* شريط إحصائيات صغير */
-    .hero-stats {
-      display: flex;
-      gap: clamp(28px, 6vw, 64px);
-      margin-top: 64px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp 1.2s ease 0.45s both;
-    }
-    .stat { text-align: center; }
-    .stat .num { font-size: 30px; font-weight: 800; }
-    .stat .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
-
-    /* مؤشر التمرير */
     .scroll-hint {
-      position: absolute;
-      bottom: 26px;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--muted);
-      font-size: 12px;
-      letter-spacing: 2px;
-      animation: bounce 2s infinite;
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      color: var(--muted); font-size: 12px; letter-spacing: 2px; animation: bounce 2s infinite;
+      will-change: transform, opacity;
     }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
 
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ===== قسم بعد الهيرو (عشان تحسّ بالانتقال) ===== */
+    .section {
+      position: relative; z-index: 2;
+      background: var(--bg-soft);
+      padding: clamp(80px, 12vw, 160px) clamp(20px, 6vw, 80px);
+      border-top: 1px solid var(--ring);
     }
-    @keyframes bounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50%      { transform: translateX(-50%) translateY(8px); }
-    }
+    .section h2 { font-size: clamp(28px, 5vw, 56px); font-weight: 800; max-width: 20ch; }
+    .section p  { color: var(--muted); font-weight: 300; max-width: 60ch; margin-top: 20px; font-size: 18px; line-height: 1.8; }
 
-    /* ===== Responsive ===== */
+    /* عناصر تظهر عند التمرير */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
     @media (max-width: 760px) {
       .nav-links, .nav-cta { display: none; }
       .nav-toggle { display: block; }
+    }
+    /* احترام تفضيل تقليل الحركة */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-scroll { height: 100vh; }
+      .hero__inner, .hero-logo, .hero__glow, .hero__grid { transform: none !important; opacity: 1 !important; }
     }
   </style>
 </head>
 <body>
 
   <!-- ===== NAVBAR ===== -->
-  <header class="nav">
-    <!-- شعار نصي (استبدله بالصورة عند توفرها) -->
+  <header class="nav" id="nav">
     <a href="#" class="brand">SHAFEQ</a>
     <!-- <a href="#" class="brand"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></a> -->
-
     <nav class="nav-links">
       <a href="#work">أعمالنا</a>
       <a href="#about">من نحن</a>
       <a href="#services">خدماتنا</a>
       <a href="#contact">تواصل</a>
     </nav>
-
     <a href="#contact" class="nav-cta">ابدأ مشروعك</a>
     <button class="nav-toggle" aria-label="القائمة">☰</button>
   </header>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <span class="badge"><span class="dot"></span> متاحون لمشاريع جديدة</span>
+  <!-- ===== HERO (scroll-driven) ===== -->
+  <div class="hero-scroll" id="heroScroll">
+    <section class="hero">
+      <div class="hero__glow" id="glow"></div>
+      <div class="hero__grid" id="grid"></div>
 
-    <!-- الشعار الكبير: نص توقيعي، أو استبدله بصورة الشعار -->
-    <div class="hero-logo">SHAFEQ</div>
-    <!-- <div class="hero-logo"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></div> -->
+      <div class="hero__inner" id="heroInner">
+        <span class="badge"><span class="dot"></span> متاحون لمشاريع جديدة</span>
+        <div class="hero-logo" id="heroLogo">SHAFEQ</div>
+        <!-- <div class="hero-logo" id="heroLogo"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></div> -->
+        <h1>نصنع هويّات بصرية وتجارب رقمية تُحكى</h1>
+        <p>استوديو إبداعي متخصص في التصميم، بناء العلامات التجارية، وتطوير الويب. نحوّل أفكارك إلى منتجات أنيقة تترك أثرًا لا يُنسى.</p>
+        <div class="hero-actions">
+          <a href="#work" class="btn btn-primary">شاهد أعمالنا <span>←</span></a>
+          <a href="#contact" class="btn btn-ghost">تواصل معنا</a>
+        </div>
+      </div>
 
-    <h1>نصنع هويّات بصرية وتجارب رقمية تُحكى</h1>
+      <div class="scroll-hint" id="scrollHint">SCROLL ↓</div>
+    </section>
+  </div>
 
-    <p>
-      استوديو إبداعي متخصص في التصميم، بناء العلامات التجارية، وتطوير الويب.
-      نحوّل أفكارك إلى منتجات أنيقة تترك أثرًا لا يُنسى.
-    </p>
-
-    <div class="hero-actions">
-      <a href="#work" class="btn btn-primary">
-        شاهد أعمالنا
-        <span>←</span>
-      </a>
-      <a href="#contact" class="btn btn-ghost">تواصل معنا</a>
-    </div>
-
-    <div class="hero-stats">
-      <div class="stat"><div class="num">+120</div><div class="label">مشروع منجز</div></div>
-      <div class="stat"><div class="num">+45</div><div class="label">عميل سعيد</div></div>
-      <div class="stat"><div class="num">8</div><div class="label">سنوات خبرة</div></div>
-    </div>
-
-    <div class="scroll-hint">SCROLL ↓</div>
+  <!-- ===== SECTION بعد الهيرو ===== -->
+  <section class="section" id="work">
+    <h2 class="reveal">أعمال نفتخر فيها</h2>
+    <p class="reveal">هنا تحط مشاريعك ودراسات الحالة. كل عنصر يظهر بسلاسة عند وصول التمرير إليه، بنفس روح موقع arpeggio.</p>
   </section>
 
+  <script>
+    /* ============ الحركة المربوطة بالتمرير ============ */
+    const heroScroll = document.getElementById('heroScroll');
+    const inner      = document.getElementById('heroInner');
+    const logo       = document.getElementById('heroLogo');
+    const glow       = document.getElementById('glow');
+    const grid       = document.getElementById('grid');
+    const hint       = document.getElementById('scrollHint');
+
+    const clamp = (v, a, b) => Math.min(Math.max(v, a), b);
+    const lerp  = (a, b, t) => a + (b - a) * t;
+
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+    function update() {
+      ticking = false;
+      const rect  = heroScroll.getBoundingClientRect();
+      const total = heroScroll.offsetHeight - window.innerHeight; // مسافة التمرير المتاحة
+      // progress من 0 (أعلى الهيرو) إلى 1 (نهايته)
+      const p = clamp(-rect.top / (total || 1), 0, 1);
+
+      // الشعار: يكبّر ويطلع فوق
+      logo.style.transform = `translateY(${lerp(0, -120, p)}px) scale(${lerp(1, 1.6, p)})`;
+
+      // المحتوى: يخف ويطلع فوق
+      inner.style.opacity   = String(lerp(1, 0, clamp(p * 1.4, 0, 1)));
+      inner.style.transform = `translateY(${lerp(0, -80, p)}px)`;
+
+      // parallax للخلفيات (سرعات مختلفة)
+      glow.style.transform = `translateY(${lerp(0, 120, p)}px) scale(${lerp(1, 1.15, p)})`;
+      grid.style.transform = `translateY(${lerp(0, 220, p)}px)`;
+
+      // مؤشر التمرير يختفي بسرعة
+      hint.style.opacity = String(lerp(1, 0, clamp(p * 3, 0, 1)));
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+
+    /* ============ ظهور العناصر عند التمرير ============ */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
 </body>
 </html>
