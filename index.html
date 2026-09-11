@@ -3,112 +3,180 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>SHAFEQ</title>
+  <title>SHAFEQ — استوديو تصميم</title>
+  <meta name="description" content="SHAFEQ — مصمم وصانع علامات تجارية. هويّات بصرية وتجارب رقمية أنيقة." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #050506; --bg-soft: #0d0d10; --fg: #f5f5f7; --muted: #9a9aa2;
-      --accent: #ffffff; --ring: rgba(255,255,255,0.12); --radius: 999px;
+    :root{
+      --bg:#050506; --bg-soft:#0d0d10; --card:#141418; --fg:#f5f5f7; --muted:#9a9aa2;
+      --accent:#ffffff; --ring:rgba(255,255,255,.12); --radius:999px;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { font-family: "Cairo", system-ui, sans-serif; background: var(--bg); color: var(--fg); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-    a { color: inherit; text-decoration: none; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:"Cairo",system-ui,sans-serif;background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    section{position:relative}
+    .wrap{max-width:1180px;margin:0 auto}
 
     /* ===== Navbar ===== */
-    .nav { position: fixed; inset: 0 0 auto 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 22px clamp(20px,5vw,64px); backdrop-filter: blur(8px); background: linear-gradient(to bottom, rgba(5,5,6,0.6), rgba(5,5,6,0)); }
-    .brand { font-family: "Dancing Script", cursive; font-size: 34px; font-weight: 700; color: var(--accent); }
-    .brand img { height: 40px; width: auto; display: block; }
-    .nav-links { display: flex; gap: 34px; font-size: 15px; color: var(--muted); }
-    .nav-links a:hover { color: var(--fg); }
-    .nav-cta { padding: 10px 22px; border: 1px solid var(--ring); border-radius: var(--radius); font-size: 14px; font-weight: 600; transition: .25s; }
-    .nav-cta:hover { background: var(--fg); color: var(--bg); }
-    .nav-toggle { display: none; background: none; border: 0; color: var(--fg); font-size: 26px; cursor: pointer; }
+    .nav{position:fixed;inset:0 0 auto 0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+      padding:20px clamp(20px,5vw,64px);backdrop-filter:blur(10px);
+      background:linear-gradient(to bottom,rgba(5,5,6,.7),rgba(5,5,6,0));transition:.3s}
+    .nav.solid{background:rgba(5,5,6,.9);border-bottom:1px solid var(--ring)}
+    .brand{font-family:"Dancing Script",cursive;font-size:34px;font-weight:700;color:var(--accent)}
+    .brand img{height:40px;width:auto;display:block}
+    .nav-links{display:flex;gap:32px;font-size:15px;color:var(--muted)}
+    .nav-links a{transition:.25s}.nav-links a:hover{color:var(--fg)}
+    .nav-cta{padding:10px 22px;border:1px solid var(--ring);border-radius:var(--radius);font-size:14px;font-weight:600;transition:.25s}
+    .nav-cta:hover{background:var(--fg);color:var(--bg)}
+    .nav-toggle{display:none;background:none;border:0;color:var(--fg);font-size:26px;cursor:pointer}
+    .mobile-menu{display:none;position:fixed;inset:0;z-index:60;background:rgba(5,5,6,.98);backdrop-filter:blur(10px);
+      flex-direction:column;align-items:center;justify-content:center;gap:28px;font-size:24px}
+    .mobile-menu.open{display:flex}
+    .mobile-menu .close{position:absolute;top:24px;left:24px;background:none;border:0;color:var(--fg);font-size:34px;cursor:pointer}
 
-    /* ===== SCROLL-DRIVEN CINEMATIC HERO ===== */
-    .hero-scroll { position: relative; height: 240vh; }
-    .hero { position: sticky; top: 0; height: 100vh; overflow: hidden; isolation: isolate;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-end;
-            text-align: center; padding: 0 clamp(20px,5vw,64px) clamp(60px,10vh,110px); }
-
-    /* طبقة الصورة (parallax + zoom) */
-    .hero__media { position: absolute; inset: -8%; z-index: -3; will-change: transform, filter; }
-    .hero__media img {
-      width: 100%; height: 100%; object-fit: cover; object-position: 50% 6%;
-      /* معالجة ألوان سينمائية */
-      filter: contrast(1.08) saturate(0.9) brightness(0.92);
-    }
-
-    /* تدرّجات لدمج الصورة بالأسود + مساحة للنص (سينمائي) */
-    .hero__grade { position: absolute; inset: 0; z-index: -2; pointer-events: none;
+    /* ===== HERO ===== */
+    .hero-scroll{position:relative;height:240vh}
+    .hero{position:sticky;top:0;height:100vh;overflow:hidden;isolation:isolate;
+      display:flex;flex-direction:column;align-items:center;justify-content:flex-end;text-align:center;
+      padding:0 clamp(20px,5vw,64px) clamp(60px,10vh,110px)}
+    .hero__media{position:absolute;inset:-8%;z-index:-3;will-change:transform,filter}
+    .hero__media img{width:100%;height:100%;object-fit:cover;object-position:50% 6%;filter:contrast(1.08) saturate(.9) brightness(.92)}
+    .hero__grade{position:absolute;inset:0;z-index:-2;pointer-events:none;will-change:opacity;
       background:
-        linear-gradient(to top, rgba(5,5,6,1) 0%, rgba(5,5,6,0.6) 26%, rgba(5,5,6,0) 55%),
-        linear-gradient(to bottom, rgba(5,5,6,0.85) 0%, rgba(5,5,6,0) 30%),
-        radial-gradient(120% 90% at 50% 35%, transparent 45%, rgba(5,5,6,0.85) 100%); /* vignette */
-      will-change: opacity;
+        linear-gradient(to top,rgba(5,5,6,1) 0%,rgba(5,5,6,.6) 26%,rgba(5,5,6,0) 55%),
+        linear-gradient(to bottom,rgba(5,5,6,.85) 0%,rgba(5,5,6,0) 30%),
+        radial-gradient(120% 90% at 50% 35%,transparent 45%,rgba(5,5,6,.85) 100%)}
+    .hero__grain{position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>")}
+    .hero__bar{position:absolute;left:0;right:0;height:0;z-index:5;background:#000;will-change:height}
+    .hero__bar--top{top:0}.hero__bar--bottom{bottom:0}
+    .hero__inner{position:relative;z-index:3;will-change:transform,opacity;max-width:900px}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:7px 16px;margin-bottom:24px;border:1px solid var(--ring);
+      border-radius:var(--radius);font-size:13px;color:#d8d8de;background:rgba(255,255,255,.05);backdrop-filter:blur(6px)}
+    .badge .dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,.2)}
+    .hero-logo{font-family:"Dancing Script",cursive;font-size:clamp(56px,11vw,140px);font-weight:700;line-height:.9;margin-bottom:12px;
+      color:#fff;text-shadow:0 8px 40px rgba(0,0,0,.6);will-change:transform}
+    .hero-logo img{max-width:min(520px,85vw);height:auto;filter:invert(1) drop-shadow(0 8px 30px rgba(0,0,0,.6))}
+    .hero h1{font-size:clamp(24px,4vw,46px);font-weight:800;line-height:1.15;max-width:20ch;margin:0 auto 18px;text-shadow:0 4px 24px rgba(0,0,0,.6)}
+    .hero p{font-size:clamp(15px,2.1vw,19px);font-weight:300;color:#c9c9d2;max-width:50ch;line-height:1.7;margin:0 auto 32px;text-shadow:0 2px 16px rgba(0,0,0,.5)}
+    .hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+    .btn{display:inline-flex;align-items:center;gap:10px;padding:15px 30px;border-radius:var(--radius);font-size:16px;font-weight:600;transition:.25s;cursor:pointer;border:0}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--fg);color:var(--bg)}
+    .btn-ghost{border:1px solid rgba(255,255,255,.35);color:var(--fg);backdrop-filter:blur(6px);background:transparent}
+    .btn-ghost:hover{background:rgba(255,255,255,.1)}
+    .scroll-hint{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);z-index:6;color:#b7b7c0;font-size:12px;letter-spacing:2px;animation:bounce 2s infinite;will-change:transform,opacity}
+    @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+
+    /* ===== Generic section ===== */
+    .section{background:var(--bg-soft);padding:clamp(80px,12vw,150px) clamp(20px,6vw,64px);border-top:1px solid var(--ring);z-index:2}
+    .eyebrow{color:var(--muted);font-size:14px;letter-spacing:3px;text-transform:uppercase;margin-bottom:14px}
+    .title{font-size:clamp(28px,5vw,52px);font-weight:800;line-height:1.15;max-width:22ch}
+    .lead{color:var(--muted);font-weight:300;font-size:clamp(16px,2.2vw,19px);line-height:1.9;max-width:60ch;margin-top:20px}
+
+    /* About */
+    .about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,6vw,70px);align-items:center}
+    .about-photo{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:4/5;border:1px solid var(--ring)}
+    .about-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 20%;filter:grayscale(.15) contrast(1.05)}
+    .about-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(5,5,6,.6),transparent 45%)}
+    .stats{display:flex;gap:40px;margin-top:36px;flex-wrap:wrap}
+    .stat .num{font-size:34px;font-weight:800}.stat .label{color:var(--muted);font-size:14px;margin-top:4px}
+
+    /* Services */
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px}
+    .card{background:var(--card);border:1px solid var(--ring);border-radius:18px;padding:34px 28px;transition:.3s}
+    .card:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28);background:#17171c}
+    .card .ico{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;font-size:24px;background:rgba(255,255,255,.06);margin-bottom:20px}
+    .card h3{font-size:21px;font-weight:700;margin-bottom:10px}
+    .card p{color:var(--muted);font-weight:300;line-height:1.8;font-size:15px}
+
+    /* Work */
+    .work-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;margin-top:56px}
+    .work-item{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:16/11;border:1px solid var(--ring);background:#0f0f13}
+    .work-item .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:"Dancing Script",cursive;font-size:64px;color:rgba(255,255,255,.08)}
+    .work-item .meta{position:absolute;inset:auto 0 0 0;padding:26px;background:linear-gradient(to top,rgba(5,5,6,.92),transparent);z-index:2}
+    .work-item .meta span{color:var(--muted);font-size:13px}
+    .work-item .meta h3{font-size:22px;font-weight:700;margin-top:4px}
+    .work-item{transition:.35s}.work-item:hover{transform:translateY(-6px);border-color:rgba(255,255,255,.28)}
+
+    /* Contact */
+    .contact{background:var(--bg);text-align:center}
+    .contact .title{margin:0 auto}
+    .contact .lead{margin:20px auto 0}
+    .contact-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:40px}
+    .socials{display:flex;gap:18px;justify-content:center;margin-top:44px}
+    .socials a{width:46px;height:46px;border-radius:50%;border:1px solid var(--ring);display:grid;place-items:center;transition:.25s;color:var(--muted)}
+    .socials a:hover{background:var(--fg);color:var(--bg);transform:translateY(-3px)}
+
+    /* Footer */
+    footer{background:var(--bg);border-top:1px solid var(--ring);padding:40px clamp(20px,6vw,64px);
+      display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:14px}
+    footer .brand{font-size:28px}
+
+    /* Cinematic reveal */
+    .reveal{opacity:0;transform:translateY(50px) scale(.97);filter:blur(8px);
+      transition:opacity .9s cubic-bezier(.16,.84,.44,1),transform .9s cubic-bezier(.16,.84,.44,1),filter .9s ease}
+    .reveal.in{opacity:1;transform:none;filter:none}
+    .reveal.d1{transition-delay:.12s}.reveal.d2{transition-delay:.24s}.reveal.d3{transition-delay:.36s}
+
+    /* Scroll progress bar (cinematic) */
+    .progress{position:fixed;top:0;right:0;height:3px;width:0;z-index:70;
+      background:linear-gradient(90deg,#fff,#8a8aff);box-shadow:0 0 12px rgba(138,138,255,.6)}
+
+    /* Global film grain overlay */
+    .grain{position:fixed;inset:0;z-index:65;pointer-events:none;opacity:.045;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
+      animation:grainShift 1.2s steps(3) infinite}
+    @keyframes grainShift{0%{transform:translate(0,0)}33%{transform:translate(-4%,3%)}66%{transform:translate(3%,-4%)}100%{transform:translate(0,0)}}
+
+    /* Parallax helper */
+    .par{will-change:transform}
+
+    @media (max-width:900px){
+      .about-grid{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.work-grid{grid-template-columns:1fr}
     }
-    /* حبيبات فيلم خفيفة */
-    .hero__grain { position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: 0.06; mix-blend-mode: overlay;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    @media (max-width:760px){
+      .nav-links,.nav-cta{display:none}.nav-toggle{display:block}
+      .hero__media img{object-position:50% 4%}
     }
-    /* شريط سينمائي (letterbox) يظهر مع السحب */
-    .hero__bar { position: absolute; left: 0; right: 0; height: 0; z-index: 5; background: #000; will-change: height; }
-    .hero__bar--top { top: 0; }
-    .hero__bar--bottom { bottom: 0; }
-
-    .hero__inner { position: relative; z-index: 3; will-change: transform, opacity; max-width: 900px; }
-    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px; margin-bottom: 26px; border: 1px solid var(--ring); border-radius: var(--radius); font-size: 13px; color: #d8d8de; background: rgba(255,255,255,.05); backdrop-filter: blur(6px); }
-    .badge .dot { width: 8px; height: 8px; border-radius: 50%; background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,.2); }
-    .hero-logo { font-family: "Dancing Script", cursive; font-size: clamp(56px,11vw,140px); font-weight: 700; line-height: .9; margin-bottom: 14px;
-      color: #fff; text-shadow: 0 8px 40px rgba(0,0,0,.6); will-change: transform; }
-    .hero-logo img { max-width: min(520px,85vw); height: auto; filter: invert(1) drop-shadow(0 8px 30px rgba(0,0,0,.6)); }
-    .hero h1 { font-size: clamp(24px,4vw,46px); font-weight: 800; line-height: 1.15; max-width: 20ch; margin: 0 auto 20px; text-shadow: 0 4px 24px rgba(0,0,0,.6); }
-    .hero p { font-size: clamp(15px,2.1vw,19px); font-weight: 300; color: #c9c9d2; max-width: 50ch; line-height: 1.7; margin: 0 auto 34px; text-shadow: 0 2px 16px rgba(0,0,0,.5); }
-    .hero-actions { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; border-radius: var(--radius); font-size: 16px; font-weight: 600; transition: .25s; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn-primary { background: var(--fg); color: var(--bg); }
-    .btn-ghost { border: 1px solid rgba(255,255,255,.35); color: var(--fg); backdrop-filter: blur(6px); }
-    .btn-ghost:hover { background: rgba(255,255,255,.1); }
-    .scroll-hint { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); z-index: 6; color: #b7b7c0; font-size: 12px; letter-spacing: 2px; animation: bounce 2s infinite; will-change: transform, opacity; }
-    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
-
-    /* ===== القسم اللي بعده ===== */
-    .section { position: relative; z-index: 2; background: var(--bg-soft); padding: clamp(80px,12vw,160px) clamp(20px,6vw,80px); border-top: 1px solid var(--ring); }
-    .section h2 { font-size: clamp(28px,5vw,56px); font-weight: 800; max-width: 20ch; }
-    .section p { color: var(--muted); font-weight: 300; max-width: 60ch; margin-top: 20px; font-size: 18px; line-height: 1.8; }
-    .reveal { opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease; }
-    .reveal.in { opacity: 1; transform: none; }
-
-    @media (max-width:760px){ .nav-links,.nav-cta{display:none} .nav-toggle{display:block} .hero__media img{object-position:50% 4%} }
-    @media (prefers-reduced-motion: reduce){ .hero-scroll{height:100vh} .hero__media,.hero__inner,.hero-logo{transform:none!important} .hero__bar{height:0!important} }
+    @media (prefers-reduced-motion:reduce){
+      .hero-scroll{height:100vh}.hero__media,.hero__inner,.hero-logo{transform:none!important}.hero__bar{height:0!important}
+      .reveal{opacity:1;transform:none}
+    }
   </style>
 </head>
 <body>
 
-  <header class="nav">
+  <div class="progress" id="progress"></div>
+  <div class="grain"></div>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
     <a href="#" class="brand">SHAFEQ</a>
     <!-- <a href="#" class="brand"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></a> -->
     <nav class="nav-links">
       <a href="#work">أعمالي</a><a href="#about">عني</a><a href="#services">خدماتي</a><a href="#contact">تواصل</a>
     </nav>
     <a href="#contact" class="nav-cta">ابدأ مشروعك</a>
-    <button class="nav-toggle" aria-label="القائمة">☰</button>
+    <button class="nav-toggle" id="navToggle" aria-label="القائمة">☰</button>
   </header>
 
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="close" id="menuClose" aria-label="إغلاق">×</button>
+    <a href="#work">أعمالي</a><a href="#about">عني</a><a href="#services">خدماتي</a><a href="#contact">تواصل</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
   <div class="hero-scroll" id="heroScroll">
     <section class="hero">
-      <!-- صورتك: احفظها باسم assets/hero.jpg -->
-      <div class="hero__media" id="media">
-        <img src="assets/hero.jpg" alt="SHAFEQ" />
-      </div>
+      <div class="hero__media" id="media"><img src="assets/hero.jpg" alt="SHAFEQ" /></div>
       <div class="hero__grade" id="grade"></div>
       <div class="hero__grain"></div>
       <div class="hero__bar hero__bar--top" id="barTop"></div>
       <div class="hero__bar hero__bar--bottom" id="barBottom"></div>
-
       <div class="hero__inner" id="heroInner">
         <span class="badge"><span class="dot"></span> متاح لمشاريع جديدة</span>
         <div class="hero-logo" id="heroLogo">SHAFEQ</div>
@@ -120,52 +188,159 @@
           <a href="#contact" class="btn btn-ghost">تواصل معي</a>
         </div>
       </div>
-
       <div class="scroll-hint" id="scrollHint">SCROLL ↓</div>
     </section>
   </div>
 
-  <section class="section" id="work">
-    <h2 class="reveal">أعمال أفتخر فيها</h2>
-    <p class="reveal">هنا تحط مشاريعك ودراسات الحالة. كل عنصر يظهر بسلاسة عند وصول التمرير إليه.</p>
+  <!-- ===== ABOUT ===== -->
+  <section class="section" id="about">
+    <div class="wrap about-grid">
+      <div>
+        <div class="eyebrow reveal">عني</div>
+        <h2 class="title reveal d1">أصمّم علامات تجارية تحكي قصة</h2>
+        <p class="lead reveal d2">أنا شفيق، مصمم متخصص في بناء الهويّات البصرية وتجارب المستخدم. أؤمن أن التصميم الجيد ليس شكلاً جميلاً فقط، بل أداة تواصل تصنع انطباعاً وتبني ثقة. أعمل مع العلامات الناشئة والشركات لتحويل رؤيتها إلى تصميم أنيق ومتّسق.</p>
+        <div class="stats">
+          <div class="stat reveal d1"><div class="num" data-count="120" data-prefix="+">0</div><div class="label">مشروع منجز</div></div>
+          <div class="stat reveal d2"><div class="num" data-count="45" data-prefix="+">0</div><div class="label">عميل سعيد</div></div>
+          <div class="stat reveal d3"><div class="num" data-count="8">0</div><div class="label">سنوات خبرة</div></div>
+        </div>
+      </div>
+      <div class="about-photo reveal d2 par" data-speed="0.06"><img src="assets/hero.jpg" alt="شفيق" /></div>
+    </div>
   </section>
 
+  <!-- ===== SERVICES ===== -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="eyebrow reveal">خدماتي</div>
+      <h2 class="title reveal d1">وش أقدّم لك</h2>
+      <div class="cards">
+        <div class="card reveal d1"><div class="ico">✦</div><h3>الهويّة البصرية</h3><p>تصميم شعار ونظام بصري متكامل: ألوان، خطوط، ودليل استخدام يعكس شخصية علامتك.</p></div>
+        <div class="card reveal d2"><div class="ico">◐</div><h3>تصميم واجهات UI/UX</h3><p>واجهات نظيفة وتجارب سلسة للمواقع والتطبيقات، مبنية على فهم المستخدم.</p></div>
+        <div class="card reveal d3"><div class="ico">❖</div><h3>تطوير الويب</h3><p>تحويل التصاميم إلى مواقع سريعة ومتجاوبة بأحدث التقنيات وأداء عالٍ.</p></div>
+        <div class="card reveal d1"><div class="ico">▲</div><h3>التصميم الحركي</h3><p>أنيميشن وحركات دقيقة تضيف حياة للواجهات وتجذب الانتباه.</p></div>
+        <div class="card reveal d2"><div class="ico">✎</div><h3>محتوى وسوشيال</h3><p>تصاميم منشورات وهوية بصرية موحّدة لمنصاتك الاجتماعية.</p></div>
+        <div class="card reveal d3"><div class="ico">◆</div><h3>الاستشارات</h3><p>جلسات استشارية لتطوير علامتك التجارية وتوجيه هويّتها بالاتجاه الصحيح.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WORK ===== -->
+  <section class="section" id="work">
+    <div class="wrap">
+      <div class="eyebrow reveal">أعمالي</div>
+      <h2 class="title reveal d1">مختارات من مشاريعي</h2>
+      <div class="work-grid">
+        <a class="work-item reveal d1" href="#contact"><div class="ph">A</div><div class="meta"><span>هوية بصرية</span><h3>مشروع أبجد</h3></div></a>
+        <a class="work-item reveal d2" href="#contact"><div class="ph">N</div><div class="meta"><span>تطبيق جوال</span><h3>مشروع نُهى</h3></div></a>
+        <a class="work-item reveal d1" href="#contact"><div class="ph">S</div><div class="meta"><span>موقع إلكتروني</span><h3>مشروع سديم</h3></div></a>
+        <a class="work-item reveal d2" href="#contact"><div class="ph">Q</div><div class="meta"><span>هوية + سوشيال</span><h3>مشروع قمر</h3></div></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section class="section contact" id="contact">
+    <div class="wrap">
+      <div class="eyebrow reveal">تواصل</div>
+      <h2 class="title reveal d1">عندك مشروع؟ خلّنا نتكلم</h2>
+      <p class="lead reveal d2">جاهز أساعدك تبني هوية تفرّقك عن غيرك. راسلني ونبدأ من فكرة.</p>
+      <div class="contact-actions reveal d2">
+        <a href="mailto:hello@shafeq.design" class="btn btn-primary">راسلني بالإيميل</a>
+        <a href="https://wa.me/000000000" class="btn btn-ghost" target="_blank" rel="noopener">واتساب</a>
+      </div>
+      <div class="socials reveal d3">
+        <a href="#" aria-label="Instagram" title="Instagram">IG</a>
+        <a href="#" aria-label="X" title="X">X</a>
+        <a href="#" aria-label="Behance" title="Behance">Be</a>
+        <a href="#" aria-label="LinkedIn" title="LinkedIn">in</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <a href="#" class="brand">SHAFEQ</a>
+    <div>© <span id="year"></span> SHAFEQ. جميع الحقوق محفوظة.</div>
+  </footer>
+
   <script>
+    // Nav scroll state
+    const nav=document.getElementById('nav');
+    addEventListener('scroll',()=>nav.classList.toggle('solid',scrollY>40),{passive:true});
+
+    // Mobile menu
+    const mm=document.getElementById('mobileMenu');
+    document.getElementById('navToggle').onclick=()=>mm.classList.add('open');
+    document.getElementById('menuClose').onclick=()=>mm.classList.remove('open');
+    mm.querySelectorAll('a').forEach(a=>a.onclick=()=>mm.classList.remove('open'));
+
+    // Year
+    document.getElementById('year').textContent=new Date().getFullYear();
+
+    // ===== Scroll-driven cinematic hero =====
     const heroScroll=document.getElementById('heroScroll'),media=document.getElementById('media'),
           grade=document.getElementById('grade'),inner=document.getElementById('heroInner'),
           logo=document.getElementById('heroLogo'),hint=document.getElementById('scrollHint'),
           barTop=document.getElementById('barTop'),barBottom=document.getElementById('barBottom');
-    const clamp=(v,a,b)=>Math.min(Math.max(v,a),b), lerp=(a,b,t)=>a+(b-a)*t;
+    const clamp=(v,a,b)=>Math.min(Math.max(v,a),b),lerp=(a,b,t)=>a+(b-a)*t;
     let ticking=false;
-    function onScroll(){ if(!ticking){ requestAnimationFrame(update); ticking=true; } }
+    function onScroll(){if(!ticking){requestAnimationFrame(update);ticking=true;}}
     function update(){
       ticking=false;
       const rect=heroScroll.getBoundingClientRect();
-      const total=heroScroll.offsetHeight-window.innerHeight;
-      const p=clamp(-rect.top/(total||1),0,1);            // 0 → 1 مع السحب للأسفل
-
-      // الصورة: zoom + parallax + تعتيم تدريجي (إحساس سينمائي)
+      const total=heroScroll.offsetHeight-innerHeight;
+      const p=clamp(-rect.top/(total||1),0,1);
       media.style.transform=`translateY(${lerp(0,-60,p)}px) scale(${lerp(1,1.25,p)})`;
-      media.style.filter=`brightness(${lerp(1,0.4,p)})`;
-
-      // التدرّج الأسود يزيد عشان الانتقال للقسم الجاي
+      media.style.filter=`brightness(${lerp(1,.4,p)})`;
       grade.style.opacity=String(lerp(1,1.6,p));
-
-      // الشريط السينمائي (letterbox) ينفتح مع السحب
       const bar=lerp(0,10,clamp(p*1.2,0,1));
-      barTop.style.height=bar+'vh'; barBottom.style.height=bar+'vh';
-
-      // النص + الشعار: يطلع ويخف
+      barTop.style.height=bar+'vh';barBottom.style.height=bar+'vh';
       logo.style.transform=`translateY(${lerp(0,-40,p)}px) scale(${lerp(1,1.15,p)})`;
       inner.style.opacity=String(lerp(1,0,clamp(p*1.5,0,1)));
       inner.style.transform=`translateY(${lerp(0,-70,p)}px)`;
-
       hint.style.opacity=String(lerp(1,0,clamp(p*3,0,1)));
     }
-    addEventListener('scroll',onScroll,{passive:true}); addEventListener('resize',update); update();
+    // Progress bar + parallax (folded into same rAF loop)
+    const progress=document.getElementById('progress');
+    const parEls=[...document.querySelectorAll('.par')];
+    function updateExtras(){
+      const h=document.documentElement.scrollHeight-innerHeight;
+      progress.style.width=(clamp(scrollY/(h||1),0,1)*100)+'%';
+      for(const el of parEls){
+        const r=el.getBoundingClientRect();
+        const centerOffset=(r.top+r.height/2)-innerHeight/2;
+        const sp=parseFloat(el.dataset.speed||'0.05');
+        el.style.transform=`translateY(${-centerOffset*sp}px)`;
+      }
+    }
+    const _update=update;
+    update=function(){_update();updateExtras();};
+    addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',update);update();
 
-    const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in')}),{threshold:.2});
+    // ===== Cinematic reveal on scroll =====
+    const io=new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        if(e.target.querySelector?.('[data-count]')||e.target.hasAttribute('data-count')) startCount(e.target);
+        io.unobserve(e.target);
+      }
+    }),{threshold:.15});
     document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+    // ===== Count-up numbers =====
+    function startCount(scope){
+      const nums=scope.matches?.('[data-count]')?[scope]:scope.querySelectorAll('[data-count]');
+      nums.forEach(n=>{
+        const target=+n.dataset.count, prefix=n.dataset.prefix||'', dur=1400, t0=performance.now();
+        (function tick(t){
+          const p=clamp((t-t0)/dur,0,1);
+          const eased=1-Math.pow(1-p,3);
+          n.textContent=prefix+Math.round(target*eased);
+          if(p<1)requestAnimationFrame(tick);
+        })(t0);
+      });
+    }
   </script>
 </body>
 </html>
