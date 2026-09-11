@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHAFEQ</title>
+
+  <!-- خط توقيعي قريب من الشعار (استبدله بصورة الشعار الأصلية عند الحاجة) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #0b0b0d;
+      --bg-soft: #131316;
+      --fg: #f5f5f7;
+      --muted: #9a9aa2;
+      --accent: #ffffff;
+      --ring: rgba(255, 255, 255, 0.12);
+      --radius: 999px;
+      --max: 1200px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Cairo", system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ===== Navbar ===== */
+    .nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 22px clamp(20px, 5vw, 64px);
+      backdrop-filter: blur(12px);
+      background: linear-gradient(to bottom, rgba(11, 11, 13, 0.75), rgba(11, 11, 13, 0));
+    }
+
+    .brand {
+      font-family: "Dancing Script", cursive;
+      font-size: 34px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      line-height: 1;
+      color: var(--accent);
+      user-select: none;
+    }
+    /* لو عندك صورة الشعار: احذف .brand النصي واستخدم هذا */
+    .brand img { height: 40px; width: auto; display: block; }
+
+    .nav-links {
+      display: flex;
+      gap: 34px;
+      font-size: 15px;
+      color: var(--muted);
+    }
+    .nav-links a { transition: color 0.25s ease; }
+    .nav-links a:hover { color: var(--fg); }
+
+    .nav-cta {
+      padding: 10px 22px;
+      border: 1px solid var(--ring);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 600;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .nav-cta:hover { background: var(--fg); color: var(--bg); }
+
+    .nav-toggle { display: none; background: none; border: 0; color: var(--fg); font-size: 26px; cursor: pointer; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 140px clamp(20px, 5vw, 64px) 80px;
+      isolation: isolate;
+    }
+
+    /* توهج خلفي متدرّج */
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(900px 500px at 50% -10%, rgba(120, 120, 255, 0.14), transparent 60%),
+        radial-gradient(700px 500px at 80% 110%, rgba(255, 120, 180, 0.10), transparent 60%),
+        var(--bg);
+    }
+
+    /* شبكة نقطية خفيفة */
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+      background-size: 26px 26px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+              mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000 40%, transparent 100%);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      margin-bottom: 30px;
+      border: 1px solid var(--ring);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.03);
+      animation: fadeUp 0.8s ease both;
+    }
+    .badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2);
+    }
+
+    .hero-logo {
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(64px, 12vw, 150px);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: 1px;
+      margin-bottom: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #b9b9c6 100%);
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp 0.9s ease 0.05s both;
+    }
+    /* بديل بصورة الشعار الأصلية */
+    .hero-logo img { max-width: min(560px, 90vw); height: auto; filter: invert(1); }
+
+    .hero h1 {
+      font-size: clamp(26px, 4.5vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      max-width: 18ch;
+      margin: 0 auto 22px;
+      animation: fadeUp 1s ease 0.15s both;
+    }
+
+    .hero p {
+      font-size: clamp(15px, 2.2vw, 19px);
+      font-weight: 300;
+      color: var(--muted);
+      max-width: 52ch;
+      line-height: 1.7;
+      margin: 0 auto 40px;
+      animation: fadeUp 1.05s ease 0.25s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 1.1s ease 0.35s both;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px 30px;
+      border-radius: var(--radius);
+      font-size: 16px;
+      font-weight: 600;
+      transition: transform 0.2s ease, background 0.25s ease, opacity 0.25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary { background: var(--fg); color: var(--bg); }
+    .btn-primary:hover { opacity: 0.9; }
+
+    .btn-ghost { border: 1px solid var(--ring); color: var(--fg); }
+    .btn-ghost:hover { background: rgba(255, 255, 255, 0.06); }
+
+    /* شريط إحصائيات صغير */
+    .hero-stats {
+      display: flex;
+      gap: clamp(28px, 6vw, 64px);
+      margin-top: 64px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 1.2s ease 0.45s both;
+    }
+    .stat { text-align: center; }
+    .stat .num { font-size: 30px; font-weight: 800; }
+    .stat .label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+    /* مؤشر التمرير */
+    .scroll-hint {
+      position: absolute;
+      bottom: 26px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 2px;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 760px) {
+      .nav-links, .nav-cta { display: none; }
+      .nav-toggle { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <header class="nav">
+    <!-- شعار نصي (استبدله بالصورة عند توفرها) -->
+    <a href="#" class="brand">SHAFEQ</a>
+    <!-- <a href="#" class="brand"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></a> -->
+
+    <nav class="nav-links">
+      <a href="#work">أعمالنا</a>
+      <a href="#about">من نحن</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#contact">تواصل</a>
+    </nav>
+
+    <a href="#contact" class="nav-cta">ابدأ مشروعك</a>
+    <button class="nav-toggle" aria-label="القائمة">☰</button>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <span class="badge"><span class="dot"></span> متاحون لمشاريع جديدة</span>
+
+    <!-- الشعار الكبير: نص توقيعي، أو استبدله بصورة الشعار -->
+    <div class="hero-logo">SHAFEQ</div>
+    <!-- <div class="hero-logo"><img src="assets/shafeq-logo.png" alt="SHAFEQ" /></div> -->
+
+    <h1>نصنع هويّات بصرية وتجارب رقمية تُحكى</h1>
+
+    <p>
+      استوديو إبداعي متخصص في التصميم، بناء العلامات التجارية، وتطوير الويب.
+      نحوّل أفكارك إلى منتجات أنيقة تترك أثرًا لا يُنسى.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#work" class="btn btn-primary">
+        شاهد أعمالنا
+        <span>←</span>
+      </a>
+      <a href="#contact" class="btn btn-ghost">تواصل معنا</a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat"><div class="num">+120</div><div class="label">مشروع منجز</div></div>
+      <div class="stat"><div class="num">+45</div><div class="label">عميل سعيد</div></div>
+      <div class="stat"><div class="num">8</div><div class="label">سنوات خبرة</div></div>
+    </div>
+
+    <div class="scroll-hint">SCROLL ↓</div>
+  </section>
+
+</body>
+</html>
